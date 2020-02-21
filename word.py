@@ -10,9 +10,9 @@ class Game:
 
     def __init__(self):
         self.player = Player()
-        self.start_game()
+        self.start_game(word_length, split_word)
 
-    def start_game(self):
+    def open_file(self):
         with open('words.txt', 'r') as file:
             data = file.read()
             word_list = [word for word in data.split()]
@@ -22,6 +22,10 @@ class Game:
             print(random_word)
             split_word = list(random_word)
             print(split_word)
+            return split_word, word_length
+
+    def start_game(self, word_length, split_word):
+        self.word_length = word_length
 
         print("This is a word guessing game.\nYou'll be given a random word, and you have 8 tries to guess that word.\n On each turn, you can guess a letter.\nAre you ready?")
 
@@ -32,8 +36,7 @@ class Game:
             print(
                 f"Great! I've picked a random word for you.\nIt has {word_length} characters. You have 8 guesses.")
 
-            self.guess()
-            return split_word
+            self.guess(split_word)
 
             # print('this is working')
 
@@ -45,9 +48,9 @@ class Game:
             exit
 
         else:
-            self.start_game()
+            self.start_game(word_length, split_word)
 
-    def guess(self):
+    def guess(self, split_word):
         '''
         check if input is letter
         '''
