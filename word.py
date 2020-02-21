@@ -14,13 +14,10 @@ class Player:
 
 class Game:
 
-    letter_guesses = []
-
     def __init__(self):
         self.player = Player()
         # self.open_file()
         self.start_game(self.open_file())
-        guess_count = 8
 
     def open_file(self):
 
@@ -43,7 +40,7 @@ class Game:
         split_word = word_args[1]
         game_word = word_args[2]
         guess_count = 8
-        guesses = 0
+        letter_guesses = []
 
         print("This is a word guessing game.\nYou'll be given a random word, and you have 8 tries to guess that word.\n On each turn, you can guess a letter.\nAre you ready?")
 
@@ -56,7 +53,7 @@ class Game:
 
             print(game_word)
 
-            self.guess(split_word)
+            self.validate_input(split_word)
 
             # print('this is working')
 
@@ -67,17 +64,7 @@ class Game:
             print("Sorry! Please return when you're ready to take on the world!")
             exit()
 
-        else:
-            self.start_game(word_length, split_word)
-
         return word_length, split_word
-
-    def guess(self, split_word):
-
-        self.split_word = split_word
-        '''
-        check if input is letter
-        '''
 
     def validate_input(self, split_word):
 
@@ -86,29 +73,29 @@ class Game:
         if len(letter) > 1:
             print("Please only guess one letter per turn!")
         if not letter.isalpha:
-            print("There are no numbers in the word; please guess again.")
+            print("There are only letters in the word; please guess again.")
 
         if letter.isalpha and len(letter) == 1:
 
             if letter in split_word:
-                self.guess_right(letter)
+                self.guess_right(letter, split_word)
             else:
-                self.guess_wrong(letter)
+                self.guess_wrong(letter, guess_count)
 
-    def guess_again(self, letter, split_word):
-        letter = input('Please choose a letter: ')
-
-    def guess_right(self, letter):
+    def guess_right(self, letter, split_word):
         if letter in VOWELS:
             print(f'Yes! The word contains an {letter}!')
         else:
             print(f'Yes! The word contains a {letter}!')
-            self.guess_again(letter)
 
-    def guess_wrong(self, letter, guess_count):
+        self.validate_input(split_word)
+
+    def guess_wrong(self, letter, split_word, guess_count):
 
         print(f'Sorry,the word does not have a{letter}')
         guess_count - 1
+
+        self.validate_input(split_word)
 
         return guess_count
 
