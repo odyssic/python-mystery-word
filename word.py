@@ -10,9 +10,10 @@ class Game:
 
     def __init__(self):
         self.player = Player()
+        self.open_file(file)
         self.start_game(word_length, split_word)
 
-    def open_file(self):
+    def open_file(self, file):
         with open('words.txt', 'r') as file:
             data = file.read()
             word_list = [word for word in data.split()]
@@ -51,6 +52,8 @@ class Game:
             self.start_game(word_length, split_word)
 
     def guess(self, split_word):
+
+        self.split_word = split_word
         '''
         check if input is letter
         '''
