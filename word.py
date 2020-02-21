@@ -10,7 +10,7 @@ class Game:
 
     def __init__(self):
         self.player = Player()
-        self.open_file()
+        # self.open_file()
         self.start_game(self.open_file(), self.open_file())
 
     def open_file(self):
@@ -23,7 +23,7 @@ class Game:
             word_length = len(random_word)
             print(random_word)
             split_word = list(random_word)
-            # print(split_word)
+            print(split_word)
             return split_word, word_length, data
 
     def start_game(self, word_length, split_word):
