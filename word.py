@@ -84,15 +84,20 @@ class Game:
 
     def guess_right(self, letter, split_word):
         if letter in VOWELS:
-            print(f'Yes! The word contains an {letter}!')
+            print(f'Yes! There is an {letter} in the word!')
         else:
-            print(f'Yes! The word contains a {letter}!')
+            print(f'Yes! There is a {letter} in the word!')
 
         self.validate_input(split_word)
 
     def guess_wrong(self, letter, split_word, guess_count):
 
-        print(f'Sorry,the word does not have a{letter}')
+        if letter in VOWELS:
+            print(f'Sorry, the word does not have a {letter}!')
+        else:
+            print(f'Sorry, the word does not have a {letter}!')
+
+        print(f'Sorry,the word does not have a {letter}')
         guess_count - 1
 
         self.validate_input(split_word)
