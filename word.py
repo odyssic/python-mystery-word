@@ -2,20 +2,23 @@ import random
 
 
 def open_file(file):
-
     with open(file) as file:
         open_file = file.read()
         print(type(open_file))
 
-        return open_file
-
-    # print(open_file)
+    return open_file
 
 
 def print_word_freq(file):
-
+    # stores list as a string
     list = open_file(file)
-    return list
+    # prints list
+    # print(list)
+    # print(type(list))
+    split_list = list.split(',')
+    print(split_list)
+    print(type(split_list))
+    return split_list
 
 
 if __name__ == "__main__":
@@ -33,7 +36,6 @@ if __name__ == "__main__":
     else:
         print(f"{file} does not exist!")
         exit(1)
-# end import function
 
 
 class Player:
@@ -45,7 +47,8 @@ class Game:
     def __init__(self):
         self.player = Player()
         self.start_game()
-        random_word = random.choice(list)
+        random_word = random.choice(split_list)
+        print(random_word)
 
     def start_game(self):
         print("This is a word guessing game.\nYou'll be given a random word, and you have 8 tries to guess that word.\n On each turn, you can guess a letter.\nAre you ready to proceed?")
@@ -57,7 +60,7 @@ class Game:
             print(
                 "Great! I've picked a random word for you.\nYou have 8 guesses.\nPLease choose a letter: ")
 
-            print(list)
+            print('this is working')
 
             # print(random_word)
 
