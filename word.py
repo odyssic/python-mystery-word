@@ -1,85 +1,107 @@
 import random
 
 
-def open_file(file):
-    with open(file) as file:
-        open_file = file.read()
-        print(type(open_file))
-
-    return open_file
-
-
-def print_word_freq(file):
-    # stores list as a string
-    list = open_file(file)
-    # prints list
-    # print(list)
-    # print(type(list))
-    split_list = list.split(',')
-    print(split_list)
-    print(type(split_list))
-    return split_list
-
-
-if __name__ == "__main__":
-    import argparse
-    from pathlib import Path
-
-    parser = argparse.ArgumentParser(
-        description='Get the word frequency in a text file.')
-    parser.add_argument('file', help='file to read')
-    args = parser.parse_args()
-
-    file = Path(args.file)
-    if file.is_file():
-        print_word_freq(file)
-    else:
-        print(f"{file} does not exist!")
-        exit(1)
-
-
 class Player:
     def __init__(self):
         pass
 
 
 class Game:
+
     def __init__(self):
         self.player = Player()
         self.start_game()
-        random_word = random.choice(split_list)
-        print(random_word)
 
     def start_game(self):
-        print("This is a word guessing game.\nYou'll be given a random word, and you have 8 tries to guess that word.\n On each turn, you can guess a letter.\nAre you ready to proceed?")
+        with open('words.txt', 'r') as file:
+            data = file.read()
+            word_list = [word for word in data.split()]
+
+            random_word = random.choice(word_list)
+            word_length = len(random_word)
+            print(random_word)
+            split_word = list(random_word)
+            print(split_word)
+
+        print("This is a word guessing game.\nYou'll be given a random word, and you have 8 tries to guess that word.\n On each turn, you can guess a letter.\nAre you ready?")
 
         answer = input('"(Y)es" or "(N)o"?')
 
-        if answer == "Y":
+        if answer.lower() == "y":
 
             print(
-                "Great! I've picked a random word for you.\nYou have 8 guesses.\nPLease choose a letter: ")
+                f"Great! I've picked a random word for you.\nIt has {word_length} characters. You have 8 guesses.")
 
-            print('this is working')
+            self.guess()
+            return split_word
+
+            # print('this is working')
 
             # print(random_word)
 
-    # def guess(self):
-    #     '''
-    #     check if input is letter
-    #     '''
+        elif answer.lower() == "n":
 
-        # letter = input('Please guess by typing a letter: ')
-        # if letter is in string:
-        #     print(f'Yes! The word contains a {Letter}!')
+            print("Sorry! Please return when you're ready to take on the world!")
+            exit
 
-        # remember to render lowercase
-        # and split before checking for letters
+        else:
+            self.start_game()
 
-        # s = 'a123b'
+    def guess(self):
+        '''
+        check if input is letter
+        '''
 
-        # for char in s:
-        # print(char, char.isalpha())
+        letter = input('Please guess by choosing a letter: ')
+        letter = letter.lower()
+        if len(letter) > 1:
+            print("Please only guess one letter per turn!")
+        if not letter.isalpha:
+            print("There are no numbers in the word; please guess again.")
+
+        if letter.isalpha and len(letter) == 1:
+            if letter in split_word:
+
+                print(f'Yes! The word contains a {letter}!')
 
 
 Game()
+
+# def open_file(file):
+#     with open(file) as file:
+#         open_file = file.read()
+#         print(type(open_file))
+
+#     return open_file
+
+
+# def print_word_freq(file):
+#     # stores list as a string
+#     list = open_file(file)
+#     # splits string into iterable list
+#     global split_list
+#     split_list = list.split(',')
+#     # prints list
+#     # print(list)
+
+#     return split_list
+
+
+# print(split_list)
+
+
+# if __name__ == "__main__":
+#     import argparse
+#     from pathlib import Path
+
+#     parser = argparse.ArgumentParser(
+#         description='Get the word frequency in a text file.')
+#     parser.add_argument('file', help='file to read')
+#     args = parser.parse_args()
+
+#     file = Path(args.file)
+#     if file.is_file():
+#         print_word_freq(file)
+#     else:
+#         print(f"{file} does not exist!")
+#         exit(1)
