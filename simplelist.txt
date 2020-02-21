@@ -1,0 +1,10 @@
+Penguin
+Albatross
+Rhinoceros
+Ostrich
+Hippopotamus
+Raccoon
+Moose
+Tiger
+Leopard
+Cheetah
