@@ -1,12 +1,13 @@
-import secrets
+import random
 
 
 def open_file(file):
+
     with open(file) as file:
         open_file = file.read()
         print(type(open_file))
 
-    return open_file
+        return open_file
 
     # print(open_file)
 
@@ -14,7 +15,7 @@ def open_file(file):
 def print_word_freq(file):
 
     list = open_file(file)
-    # print(list)
+    return list
 
 
 if __name__ == "__main__":
@@ -32,6 +33,7 @@ if __name__ == "__main__":
     else:
         print(f"{file} does not exist!")
         exit(1)
+# end import function
 
 
 class Player:
@@ -43,6 +45,7 @@ class Game:
     def __init__(self):
         self.player = Player()
         self.start_game()
+        random_word = random.choice(list)
 
     def start_game(self):
         print("This is a word guessing game.\nYou'll be given a random word, and you have 8 tries to guess that word.\n On each turn, you can guess a letter.\nAre you ready to proceed?")
@@ -54,23 +57,26 @@ class Game:
             print(
                 "Great! I've picked a random word for you.\nYou have 8 guesses.\nPLease choose a letter: ")
 
-            print(random_word)
+            print(list)
 
-    def guess(self):
-        '''
-        check if input is letter
-        '''
+            # print(random_word)
 
-        letter = input('Please guess by typing a letter: ')
-        if letter is in string:
-            print(f'Yes! The word contains a {Letter}!')
+    # def guess(self):
+    #     '''
+    #     check if input is letter
+    #     '''
 
-        random_word = secrets.choice(list)
+        # letter = input('Please guess by typing a letter: ')
+        # if letter is in string:
+        #     print(f'Yes! The word contains a {Letter}!')
 
-        s = 'a123b'
+        # remember to render lowercase
+        # and split before checking for letters
 
-        for char in s:
-        print(char, char.isalpha())
+        # s = 'a123b'
+
+        # for char in s:
+        # print(char, char.isalpha())
 
 
 Game()
