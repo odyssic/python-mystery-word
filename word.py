@@ -2,7 +2,6 @@ import random
 
 VOWELS = ["a", "e", "i", "o"]
 
-
 # class Player:
 
 #     def __init__(self):
@@ -21,64 +20,49 @@ VOWELS = ["a", "e", "i", "o"]
 
 class Game():
 
-    def __init__(self):
+    def __init__(self):  # constructor
         # self.player = Player()
         # self.open_file()
-        self.start_game(self.open_file())
+        # self.random_word(self.open_file())
+        self.open_file()
         # Player()
-        self.split_word = split_word
+        self.split_word = []
+        self.game_word = []
+        self.playing = True
+        self.letter_list = []
+        self.hidden_word = []
+        # self.word_list = word_list
 
     def open_file(self):
 
         with open('words.txt', 'r') as file:
             data = file.read()
+        self.random_word(data)
+        return data
+
+    def random_word(self, data):
+
         word_list = [word for word in data.split()]
         random_word = random.choice(word_list)
         word_length = len(random_word)
         print(f'This is the random word {random_word}')
         split_word = list(random_word)
-        game_word = ['_' * word_length]
-        # print(f'This is the split word {split_word}')
-        # print(f'This is the data {data}')
-        return word_length, split_word, game_word
+        hidden_word = ['_' * word_length]
+        guess_count = 8
 
-    def start_game(self, word_args):
-        # self, word_length, split_words, guess_count
-        # self.open_file(word_length, split_word, data)
-        word_length = word_args[0]
-        split_word = word_args[1]
-        game_word = word_args[2]
+        print(
+            f"I've picked a random word for you.\nIt has {word_length} characters.")
 
-        print("This is a word guessing game.\nYou'll be given a random word, and you have 8 tries to guess that word.\n On each turn, you can guess a letter.\nAre you ready?")
+        print(hidden_word)
 
-        answer = input('"(Y)es" or "(N)o"?')
+        self.validate_input(split_word, guess_count, hidden_word)
+        return hidden_word, split_word, guess_count
 
-        if answer.lower() == "y":
-
-            #  reinsert guess count to print statement.
-
-            print(
-                f"Great! I've picked a random word for you.\nIt has {word_length} characters. You have  guesses remaining.")
-
-            print(game_word)
-
-            self.validate_input(split_word)
-
-            # print('this is working')
-
-            # print(random_word)
-
-        elif answer.lower() == "n":
-
-            print("Sorry! Please return when you're ready to take on the world!")
-            exit()
-
-        return word_length, split_word
-
-    def validate_input(self, split_word):
-
+    def validate_input(self, split_word, guess_count, hidden_word):
+        print(f'You have  {guess_count} guesses remaining.')
         letter = input('Please choose a letter: ')
-        letter = letter.lower()
+
+        letter = letter.lower().strip()
 
         if len(letter) > 1:
             print("Please only guess one letter per turn!")
@@ -88,60 +72,77 @@ class Game():
         if letter.isalpha and len(letter) == 1:
 
             if letter in split_word:
-                self.guess_right(letter, split_word)
+                self.guess_right(letter, split_word, guess_count, hidden_word)
             else:
-                self.guess_wrong(letter)
+                self.guess_wrong(letter, split_word, guess_count, hidden_word)
 
-    def guess_right(self, letter, split_word):
+        return letter
+
+    def guess_right(self, letter, split_word, guess_count, hidden_word):
         if letter in VOWELS:
             print(f'Yes! There is an {letter} in the word!')
         else:
             print(f'Yes! There is a {letter} in the word!')
 
-        split_word.index(letter)
+        self.alter_hidden_word(letter, split_word, guess_count, hidden_word)
 
-        self.validate_input(split_word)
+    def alter_hidden_word(self, letter, split_word, guess_count, hidden_word):
 
-    def guess_wrong(self, letter, split_word):
+        for letter in split_word:
+            i = split_word.index(letter)
+            hidden_word = hidden_word[i].replace('_', letter)
+        print('alter hidden split word:', split_word)
+        print('alter_hidden: ', hidden_word)
+        print('index of letter in alter hidden:', i)
+
+        self.validate_input(split_word, guess_count, hidden_word)
+
+        return hidden_word
+
+    def guess_wrong(self, letter, split_word, guess_count, hidden_word):
+        guess_count = guess_count - 1
 
         if letter in VOWELS:
             print(f'Sorry, the word does not have a {letter}!')
         else:
             print(f'Sorry, the word does not have a {letter}!')
 
-        self.validate_input(split_word)
+        self.validate_input(split_word, guess_count, hidden_word)
 
-    def won_game(self):
-        pass
-        # you won the game!
-        #
+        return guess_count
 
-    def lost_game(self, split_word, word_length):
+    # def won_game(self):
+    #     pass
+    #     # you won the game!
+    #     #
 
-        print("You lost this time! would you like to play again? ")
-        answer = input('"(Y)es" or "(N)o"?')
+    # def lost_game(self, split_word, word_length):
+    #     pass
 
-        if answer.lower() == "y":
+    #     print("You lost this time! would you like to play again? ")
+    #     answer = input('"(Y)es" or "(N)o"?')
 
-            print(
-                f"Great! I've picked a random word for you.\nIt has {word_length} characters. You have  guesses remaining.")
+    #     if answer.lower() == "y":
 
-            print(game_word)
+    #         print(
+    #             f"Great! I've picked a random word for you.\nIt has {word_length} characters. You have  guesses remaining.")
 
-            self.validate_input(split_word)
+    #         print(self.game_word)
 
-            # print('this is working')
+    #         self.validate_input(split_word, hidden_word)
 
-            # print(random_word)
+    #         # print('this is working')
 
-        elif answer.lower() == "n":
+    #         # print(random_word)
 
-            print("Thank you for playing. We'll see you again soon! Goodbye!")
-            exit()
+    #     elif answer.lower() == "n":
 
-        return word_length, split_word
+    #         print("Thank you for playing. We'll see you again soon! Goodbye!")
+    #         exit()
 
-        pass
+    #     return word_length, split_word
+
+    #     pass
         # you lost the game!
 
 
