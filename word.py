@@ -30,7 +30,7 @@ class Game():
         word_list = [word for word in data.split()]
         random_word = random.choice(word_list)
         word_length = len(random_word)
-        print(f'This is the random word {random_word}')
+        # print(f'This is the random word {random_word}')
         split_word = list(random_word)
         hidden_word = ['_' * word_length]
         guess_count = 8
@@ -68,7 +68,7 @@ class Game():
             if letter.isalpha and len(letter) == 1:
 
                 if letter not in guess_letters:
-                    print(letter in guess_letters)
+                    # print(letter in guess_letters)
 
                     if letter in split_word:
                         self.guess_right(letter, split_word, guess_count,
@@ -92,7 +92,7 @@ class Game():
             print(f'Yes! There is a {letter} in the word!')
 
         guess_letters.append(letter)
-        print('guess letters:', guess_letters)
+        # print('guess letters:', guess_letters)
 
         hidden_word = self.alter_hidden_word(
             letter, split_word, guess_count, guess_letters, hidden_word, data, random_word)
