@@ -25,6 +25,23 @@ class Game():
         self.random_word(data)
         return data
 
+    def select_difficulty(self, data):
+        pass
+        print("Welcome to the infamous word guessing game I just made up. \nIt's a non-violent version of the classic 'Hangman'. \nIf you lose, you're merely humiliated. You have 8 tries to guess the word. \nAre you ready?")
+
+        answer = input('Please enter "y" to proceed, or press ANY key to quit')
+
+        if answer.lower() == "y":
+
+            print(
+                'Great! \nThere are three level of difficulty: \nEasy\nMedium\nHard\nPlease choose yours')
+
+            difficulty = input()
+
+        else:
+
+            print("Adios! Come back soon!")
+
     def random_word(self, data):
 
         word_list = [word for word in data.split()]
