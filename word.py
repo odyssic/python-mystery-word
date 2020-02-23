@@ -1,21 +1,6 @@
 import random
 
-ANWORDS = ["h", "l", "n", "m", "x", "a", "e", "i", "o"]
-
-# class Player:
-
-#     def __init__(self):
-#         pass
-#         guess_count = 0
-#         guesses = []
-#         guess_count = self.guess_count
-
-
-# def count_guesses(self, guesses, guess_count):
-
-#     pass
-#     if Game.guess_wrong:
-#         self.guess_count = self.guess_count - 1
+ANWORDS = ["h", "l", "s", "n", "m", "x", "a", "e", "i", "o"]
 
 
 class Game():
@@ -59,30 +44,43 @@ class Game():
         return hidden_word, split_word, guess_count, random_word, guess_letters
 
     def validate_input(self, split_word, guess_count, hidden_word, guess_letters, data, random_word):
-        print(f'You have  {guess_count} guesses remaining.')
-        print(hidden_word)
-        letter = input('Please choose a letter: ')
 
-        letter = letter.lower().strip()
+        if "".join(split_word) == hidden_word:
+            self.won_game(data)
 
-        if len(letter) > 1:
-            print("Please only guess one letter per turn!")
-            self.validate_input(split_word, guess_count,
-                                hidden_word, guess_letters, data, random_word)
+        else:
+            print(f'You have  {guess_count} guesses remaining.')
+            print(hidden_word)
+            letter = input('Please choose a letter: ')
 
-        if not letter.isalpha:
-            print("There are only letters in the word; please guess again.")
-            self.validate_input(split_word, guess_count,
-                                hidden_word, guess_letters, data, random_word)
+            letter = letter.lower().strip()
 
-        if letter.isalpha and len(letter) == 1:
+            if len(letter) > 1:
+                print("Please only guess one letter per turn!")
+                self.validate_input(split_word, guess_count,
+                                    hidden_word, guess_letters, data, random_word)
 
-            if letter in split_word:
-                self.guess_right(letter, split_word, guess_count,
-                                 hidden_word, guess_letters, data, random_word)
-            else:
-                self.guess_wrong(letter, split_word, guess_count,
-                                 hidden_word, guess_letters, data, random_word)
+            if not letter.isalpha:
+                print("There are only letters in the word; please guess again.")
+                self.validate_input(split_word, guess_count,
+                                    hidden_word, guess_letters, data, random_word)
+
+            if letter.isalpha and len(letter) == 1:
+
+                if letter not in guess_letters:
+                    print(letter in guess_letters)
+
+                    if letter in split_word:
+                        self.guess_right(letter, split_word, guess_count,
+                                         hidden_word, guess_letters, data, random_word)
+                    else:
+                        self.guess_wrong(letter, split_word, guess_count,
+                                         hidden_word, guess_letters, data, random_word)
+
+                else:
+                    print('Sorry, you already guessed that letter!')
+                    self.validate_input(split_word, guess_count,
+                                        hidden_word, guess_letters, data, random_word)
 
         return letter
 
@@ -99,12 +97,8 @@ class Game():
         hidden_word = self.alter_hidden_word(
             letter, split_word, guess_count, guess_letters, hidden_word, data, random_word)
 
-        print('guessright', hidden_word)
-
         self.display_hidden_word(
             split_word, guess_count, guess_letters, hidden_word, data, random_word)
-
-        print('guessright', hidden_word, 'after alter hidden word')
 
     def alter_hidden_word(self, letter, split_word, guess_count, guess_letters, hidden_word, data, random_word):
 
@@ -115,7 +109,6 @@ class Game():
 
     def display_hidden_word(self, split_word, guess_count, guess_letters, hidden_word, data, random_word):
 
-        print('display hidden word ran')
         hidden_word = [self.alter_hidden_word(letter, split_word, guess_count, guess_letters, hidden_word, data, random_word)
                        for letter in split_word]
         hidden_word = "".join(hidden_word)
