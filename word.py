@@ -28,7 +28,7 @@ class Game():
         # Player()
         self.split_word = []
         self.game_word = []
-        self.playing = True
+        # self.playing = True
         self.letter_list = []
         self.hidden_word = []
         # self.word_list = word_list
@@ -66,8 +66,10 @@ class Game():
 
         if len(letter) > 1:
             print("Please only guess one letter per turn!")
+            return
         if not letter.isalpha:
             print("There are only letters in the word; please guess again.")
+            return
 
         if letter.isalpha and len(letter) == 1:
 
@@ -88,10 +90,33 @@ class Game():
 
     def alter_hidden_word(self, letter, split_word, guess_count, hidden_word):
 
-        for letter in split_word:
-            i = split_word.index(letter)
-            hidden_word = hidden_word[i].replace('_', letter)
+        i = 0
+
+        indexes = [i for i, position in enumerate(
+            split_word) if position == letter]
+
+        print(indexes)  # list indexes needed. need to loop somehow
+
+        print('hidden word indexes:' + hidden_word[indexes])
+
+        print('after editing' + hidden_word)
+
+
+print(string)
+
+        # for char in split_word:
+        #     i = split_word.index(letter)
+        #     indexes.append(i)
+        #     print(indexes)
+
+    #         print('the index of hidden word,', hidden_word[i])
+    #         hidden_word[i].replace('_', letter)
+
+    #         for (i, replacement) in zip(i, replacements):
+    # to_modify[index] = replacement
+
         print('alter hidden split word:', split_word)
+        print(hidden_word[i].replace('_', letter))
         print('alter_hidden: ', hidden_word)
         print('index of letter in alter hidden:', i)
 
@@ -103,7 +128,7 @@ class Game():
         guess_count = guess_count - 1
 
         if letter in VOWELS:
-            print(f'Sorry, the word does not have a {letter}!')
+            print(f'Sorry, the word does not have an {letter}!')
         else:
             print(f'Sorry, the word does not have a {letter}!')
 
