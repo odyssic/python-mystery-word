@@ -1,6 +1,6 @@
 import random
 
-VOWELS = ["a", "e", "i", "o"]
+ANWORDS = ["h", "l", "n", "m", "x", "a", "e", "i", "o"]
 
 # class Player:
 
@@ -49,166 +49,133 @@ class Game():
         split_word = list(random_word)
         hidden_word = ['_' * word_length]
         guess_count = 8
+        guess_letters = []
 
         print(
             f"I've picked a random word for you.\nIt has {word_length} characters.")
 
-        print(hidden_word)
+        self.validate_input(split_word, guess_count,
+                            hidden_word, guess_letters, data, random_word)
+        return hidden_word, split_word, guess_count, random_word, guess_letters
 
-        self.validate_input(split_word, guess_count, hidden_word)
-        return hidden_word, split_word, guess_count
-
-    def validate_input(self, split_word, guess_count, hidden_word):
+    def validate_input(self, split_word, guess_count, hidden_word, guess_letters, data, random_word):
         print(f'You have  {guess_count} guesses remaining.')
+        print(hidden_word)
         letter = input('Please choose a letter: ')
 
         letter = letter.lower().strip()
 
         if len(letter) > 1:
             print("Please only guess one letter per turn!")
-            return
+            self.validate_input(split_word, guess_count,
+                                hidden_word, guess_letters, data, random_word)
+
         if not letter.isalpha:
             print("There are only letters in the word; please guess again.")
-            return
+            self.validate_input(split_word, guess_count,
+                                hidden_word, guess_letters, data, random_word)
 
         if letter.isalpha and len(letter) == 1:
 
             if letter in split_word:
-                self.guess_right(letter, split_word, guess_count, hidden_word)
+                self.guess_right(letter, split_word, guess_count,
+                                 hidden_word, guess_letters, data, random_word)
             else:
-                self.guess_wrong(letter, split_word, guess_count, hidden_word)
+                self.guess_wrong(letter, split_word, guess_count,
+                                 hidden_word, guess_letters, data, random_word)
 
         return letter
 
-    def guess_right(self, letter, split_word, guess_count, hidden_word):
-        if letter in VOWELS:
-            print(f'Yes! There is an {letter} in the word!')
+    def guess_right(self, letter, split_word, guess_count, hidden_word, guess_letters, data, random_word):
+
+        while hidden_word != split_word:
+
+            if letter in ANWORDS:
+                print(f'Yes! There is an {letter} in the word!')
+            else:
+                print(f'Yes! There is a {letter} in the word!')
+
+            guess_letters.append(letter)
+            print('guess letters:', guess_letters)
+
+            hidden_word = self.alter_hidden_word(
+                letter, split_word, guess_count, guess_letters, hidden_word, data, random_word)
+
+            print('guessright', hidden_word)
+
+            self.display_hidden_word(
+                split_word, guess_count, guess_letters, hidden_word, data, random_word)
+
+            print('guessright', hidden_word, 'after alter hidden word')
+
+        if hidden_word == split_word:
+            self.won_game(data)
+
+    def alter_hidden_word(self, letter, split_word, guess_count, guess_letters, hidden_word, data, random_word):
+
+        if letter in guess_letters:
+            return letter
         else:
-            print(f'Yes! There is a {letter} in the word!')
+            return "_"
 
-        self.alter_hidden_word(letter, split_word, guess_count, hidden_word)
+    def display_hidden_word(self, split_word, guess_count, guess_letters, hidden_word, data, random_word):
 
-    def alter_hidden_word(self, letter, split_word, guess_count, hidden_word):
+        print('display hidden word ran')
+        hidden_word = [self.alter_hidden_word(letter, split_word, guess_count, guess_letters, hidden_word, data, random_word)
+                       for letter in split_word]
 
-        i = 0
-
-        indexes = [i for i, position in enumerate(
-            split_word) if position == letter]
-
-        print(indexes)  # list indexes needed. need to loop somehow
-
-        print('hidden word indexes:' + hidden_word[indexes])
-
-        print('after editing' + hidden_word)
-
-
-print(string)
-
-        # for char in split_word:
-        #     i = split_word.index(letter)
-        #     indexes.append(i)
-        #     print(indexes)
-
-    #         print('the index of hidden word,', hidden_word[i])
-    #         hidden_word[i].replace('_', letter)
-
-    #         for (i, replacement) in zip(i, replacements):
-    # to_modify[index] = replacement
-
-        print('alter hidden split word:', split_word)
-        print(hidden_word[i].replace('_', letter))
-        print('alter_hidden: ', hidden_word)
-        print('index of letter in alter hidden:', i)
-
-        self.validate_input(split_word, guess_count, hidden_word)
+        self.validate_input(split_word, guess_count,
+                            hidden_word, guess_letters, data, random_word)
 
         return hidden_word
 
-    def guess_wrong(self, letter, split_word, guess_count, hidden_word):
+    def guess_wrong(self, letter, split_word, guess_count, hidden_word, guess_letters, data, random_word):
         guess_count = guess_count - 1
 
-        if letter in VOWELS:
-            print(f'Sorry, the word does not have an {letter}!')
-        else:
-            print(f'Sorry, the word does not have a {letter}!')
+        while guess_count > 0:
 
-        self.validate_input(split_word, guess_count, hidden_word)
+            if letter in ANWORDS:
+                print(f'Sorry, the word does not have an {letter}!')
+            else:
+                print(f'Sorry, the word does not have a {letter}!')
+
+            self.validate_input(split_word, guess_count,
+                                hidden_word, guess_letters, data, random_word)
+
+        else:
+            self.lost_game(data, random_word)
 
         return guess_count
 
-    # def won_game(self):
-    #     pass
-    #     # you won the game!
-    #     #
+    def won_game(self, data):
 
-    # def lost_game(self, split_word, word_length):
-    #     pass
+        print('Congratulations! You won the game! Bask in it for a few seconds.)
+        print('Would you like to play again?')
+        answer = input('Please enter "y" for "yes" or press ANY key to quit')
 
-    #     print("You lost this time! would you like to play again? ")
-    #     answer = input('"(Y)es" or "(N)o"?')
+        if answer.lower() == "y":
 
-    #     if answer.lower() == "y":
+            self.random_word(data))
 
-    #         print(
-    #             f"Great! I've picked a random word for you.\nIt has {word_length} characters. You have  guesses remaining.")
+        else:
 
-    #         print(self.game_word)
+            print("Thank you for playing. We'll see you again soon! Goodbye!")
+            exit()
 
-    #         self.validate_input(split_word, hidden_word)
+    def lost_game(self, data, random_word):
 
-    #         # print('this is working')
+        print(
+            f"You lost this time! \nThe hidden word was {random_word}. \nWould you like to play again? ")
+        answer=input('Please enter "y" for "yes" or press ANY key to quit')
 
-    #         # print(random_word)
+        if answer.lower() == "y":
 
-    #     elif answer.lower() == "n":
+            self.random_word(data)
 
-    #         print("Thank you for playing. We'll see you again soon! Goodbye!")
-    #         exit()
+        else:
 
-    #     return word_length, split_word
-
-    #     pass
-        # you lost the game!
+            print("Thank you for playing. We'll see you again soon! Goodbye!")
+            exit()
 
 
 Game()
-
-
-# def open_file(file):
-#     with open(file) as file:
-#         open_file = file.read()
-#         print(type(open_file))
-
-#     return open_file
-
-
-# def print_word_freq(file):
-#     # stores list as a string
-#     list = open_file(file)
-#     # splits string into iterable list
-#     global split_list
-#     split_list = list.split(',')
-#     # prints list
-#     # print(list)
-
-#     return split_list
-
-
-# print(split_list)
-
-
-# if __name__ == "__main__":
-#     import argparse
-#     from pathlib import Path
-
-#     parser = argparse.ArgumentParser(
-#         description='Get the word frequency in a text file.')
-#     parser.add_argument('file', help='file to read')
-#     args = parser.parse_args()
-
-#     file = Path(args.file)
-#     if file.is_file():
-#         print_word_freq(file)
-#     else:
-#         print(f"{file} does not exist!")
-#         exit(1)
