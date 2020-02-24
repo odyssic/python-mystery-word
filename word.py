@@ -63,7 +63,7 @@ class Game():
     def validate_input(self, split_word, guess_count, hidden_word, guess_letters, data, random_word):
 
         if "".join(split_word) == hidden_word:
-            self.won_game(data)
+            self.won_game(random_word, data)
 
         else:
             print(f'You have  {guess_count} guesses remaining.')
@@ -71,6 +71,11 @@ class Game():
             letter = input('Please choose a letter: ')
 
             letter = letter.lower().strip()
+
+            if letter in guess_letters:
+                print('Sorry, you already guessed that letter!')
+                self.validate_input(split_word, guess_count,
+                                    hidden_word, guess_letters, data, random_word)
 
             if len(letter) > 1:
                 print("Please only guess one letter per turn!")
@@ -84,20 +89,12 @@ class Game():
 
             if letter.isalpha and len(letter) == 1:
 
-                if letter not in guess_letters:
-                    # print(letter in guess_letters)
-
-                    if letter in split_word:
-                        self.guess_right(letter, split_word, guess_count,
-                                         hidden_word, guess_letters, data, random_word)
-                    else:
-                        self.guess_wrong(letter, split_word, guess_count,
-                                         hidden_word, guess_letters, data, random_word)
-
+                if letter in split_word:
+                    self.guess_right(letter, split_word, guess_count,
+                                     hidden_word, guess_letters, data, random_word)
                 else:
-                    print('Sorry, you already guessed that letter!')
-                    self.validate_input(split_word, guess_count,
-                                        hidden_word, guess_letters, data, random_word)
+                    self.guess_wrong(letter, split_word, guess_count,
+                                     hidden_word, guess_letters, data, random_word)
 
         return letter
 
@@ -151,11 +148,12 @@ class Game():
 
         return guess_count
 
-    def won_game(self, data):
+    def won_game(self, random_word, data):
 
-        print('Congratulations! You won the game! Bask in it for a few seconds.')
+        print(
+            f'Congratulations! You won the game! \nThe word was {random_word}!\nBask in it for a few seconds.')
         print('Would you like to play again?')
-        answer = input('Please enter "y" for "yes" or press ANY key to quit')
+        answer = input('Please enter "y" for "yes" or press ANY key to quit: ')
 
         if answer.lower() == "y":
 
@@ -170,7 +168,7 @@ class Game():
 
         print(
             f"You lost this time! \nThe hidden word was {random_word}. \nWould you like to play again? ")
-        answer = input('Please enter "y" for "yes" or press ANY key to quit')
+        answer = input('Please enter "y" for "yes" or press ANY key to quit: ')
 
         if answer.lower() == "y":
 
