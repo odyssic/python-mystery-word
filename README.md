@@ -20,5 +20,11 @@ This assignment was based off of a similar exercise in MIT's 6.00.1x course. It 
 
 ## Installation and Play
 
+1. Clone the repository.
+2. Cd into the directory. 
+3. Create virtual environment. Pipenv --Three
+4. Run virtual environment. Pipenv shell
+5. Run file. Python3 word.py
 
+Enjoy!
 
